@@ -6,7 +6,7 @@ import {
 } from "@tanstack/react-query";
 import type { Metadata } from 'next';
 import type { Note } from '@/types/note';
-import { fetchNoteById } from "@/lib/api/api";
+import { fetchNoteById } from "@/lib/api/serverApi";
 import NoteDetailsClient from "./NoteDetails.client";
 
 type Props = {
