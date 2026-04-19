@@ -1,6 +1,6 @@
 // hooks/useNotes.ts
 import { useQuery, useMutation, useQueryClient, keepPreviousData } from "@tanstack/react-query";
-import { fetchNotes, deleteNote } from "@/lib/api";
+import { fetchNotes, deleteNote } from "@/lib/api/api";
 
 export const useNotes = (page: number, search: string) => {
   const queryClient = useQueryClient();

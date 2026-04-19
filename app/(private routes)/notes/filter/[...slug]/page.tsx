@@ -1,65 +1,26 @@
-import NotesClient from "./Notes.client";
-import { fetchNotes } from "@/lib/api";
-import type { Metadata } from 'next';
-import {
-  HydrationBoundary,
-  QueryClient,
-  dehydrate,
-} from "@tanstack/react-query";
+import { QueryClient, dehydrate, HydrationBoundary } from '@tanstack/react-query';
+import NotesClient from './Notes.client';
+import { fetchNotes } from '@/lib/api/serverApi';
 
-interface NotesFiltersProps {
-    params: Promise<{ slug: string[] }>
-    searchParams: Promise<{ page?: string; search?: string }>;
+interface PageProps {
+  params: { slug?: string[] };
 }
 
-async function NotesFilters({
-  params,
-  searchParams,
-}: NotesFiltersProps) {
-  const { slug } = await params;
-  const { page, search } = await searchParams;
-  const category = slug?.[0] === "all" ? undefined : slug?.[0];
-  const currentPage = Number(page ?? "1");
-
+export default async function NotesFilterPage({ params }: PageProps) {
+  const awaitedParams = await params; 
+  const tag = awaitedParams.slug?.[0] ?? '';
   const queryClient = new QueryClient();
 
-  await queryClient.prefetchQuery({
-    queryKey: ["notes", currentPage, search, category],
-    queryFn: () =>
-      fetchNotes({ page: currentPage, perPage: 12, search, tag: category }),
+   await queryClient.prefetchQuery({
+    queryKey: ['notes', 1, tag, ''],
+    queryFn: () => fetchNotes({ page: 1, search: '', tag }),
   });
 
+  const dehydratedState = dehydrate(queryClient);
+
   return (
-    <HydrationBoundary state={dehydrate(queryClient)}>
-      <NotesClient tag={category} />
+    <HydrationBoundary state={dehydratedState}>
+      <NotesClient tag={tag} />
     </HydrationBoundary>
   );
 }
-
-export async function generateMetadata({ params }: NotesFiltersProps): Promise<Metadata> {
-  const { slug } = await params;
-  const filter = slug?.join(' / ') || 'All';
-
-  const title = `${filter} notes | NoteHub`;
-  const description = `Browse notes filtered by: ${filter}.`;
-
-  return {
-    title,
-    description,
-    openGraph: {
-      title,
-      description,
-      url: `https://08-zustand-gold-chi.vercel.app/notes/filter/${slug.join('/')}`,
-      images: [
-        {
-          url: 'https://ac.goit.global/fullstack/react/notehub-og-meta.jpg',
-          width: 1200,
-          height: 630,
-          alt: title,
-        },
-      ],
-    },
-  };
-}
-
-export default NotesFilters;

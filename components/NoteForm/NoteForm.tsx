@@ -2,7 +2,7 @@
 
 import { ChangeEvent, FormEvent, useId } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { createNote } from "@/lib/api";
+import { createNote } from "@/lib/api/api";
 import { DraftNote } from "@/types/note";
 import { useRouter } from "next/navigation";
 import { useNoteDraft } from "@/lib/store/noteStore";

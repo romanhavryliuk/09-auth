@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import css from "./Home.module.css";
+import css from "./page.module.css";
 
 export const metadata: Metadata = {
   title: "Page not found | NoteHub",
