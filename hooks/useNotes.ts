@@ -1,13 +1,13 @@
 // hooks/useNotes.ts
 import { useQuery, useMutation, useQueryClient, keepPreviousData } from "@tanstack/react-query";
-import { fetchNotes, deleteNote } from "@/lib/api/api";
+import { fetchNotes, deleteNote } from "@/lib/api/clientApi";
 
 export const useNotes = (page: number, search: string) => {
   const queryClient = useQueryClient();
 
   const notesQuery = useQuery({
     queryKey: ["notes", page, search],
-    queryFn: () => fetchNotes({ page, perPage: 12, search }),
+    queryFn: () => fetchNotes({ page, search }),
     placeholderData: keepPreviousData,
   });
 
