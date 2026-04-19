@@ -1,10 +1,12 @@
-import type { Metadata } from "next";
-import TanStackProvider from "@/components/TanStackProvider/TanStackProvider";
-import { Roboto } from "next/font/google";
-import "./globals.css";
-import Header from "@/components/Header/Header";
-import Footer from "@/components/Footer/Footer";
+import type { Metadata } from 'next';
+import { Roboto } from 'next/font/google';
+import TanStackProvider from '@/components/TanStackProvider/TanStackProvider';
+import AuthProvider from '@/components/AuthProvider/AuthProvider';
+import Header from '@/components/Header/Header';
+import Footer from '@/components/Footer/Footer';
+import './globals.css';
 
+const SITE_URL = 'https://notehub.goit.global';
 
 const roboto = Roboto({
   subsets: ['latin'],
@@ -19,7 +21,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'NoteHub',
     description: 'A simple app for creating, managing, and organizing notes.',
-    url: 'https://08-zustand-gold-chi.vercel.app/',
+    url: SITE_URL,
     images: [
       {
         url: 'https://ac.goit.global/fullstack/react/notehub-og-meta.jpg',
@@ -34,17 +36,17 @@ export const metadata: Metadata = {
 export default function RootLayout({
   children,
   modal,
-}: Readonly<{ children: React.ReactNode; modal: React.ReactNode}>) {
+}: Readonly<{ children: React.ReactNode; modal: React.ReactNode }>) {
   return (
     <html lang="en">
-      <body className={`${roboto.variable}`}>
+      <body className={roboto.variable}>
         <TanStackProvider>
-          <Header />
-          <main>
+          <AuthProvider>
+            <Header />
             {children}
             {modal}
-          </main>
-          <Footer />
+            <Footer />
+          </AuthProvider>
         </TanStackProvider>
       </body>
     </html>

@@ -20,11 +20,13 @@ function useDebounce<T>(value: T, delay: number): T {
 
 interface NotesClientProps {
   tag: string;
+  initialPage: number;
+  initialSearch: string;
 }
 
-export default function NotesClient({ tag }: NotesClientProps) {
-  const [page, setPage] = useState(1);
-  const [search, setSearch] = useState('');
+export default function NotesClient({ tag, initialPage, initialSearch }: NotesClientProps) {
+  const [page, setPage] = useState(initialPage);
+  const [search, setSearch] = useState(initialSearch);
   const debouncedSearch = useDebounce(search, 300);
 
   const { data, isLoading, error } = useQuery<NotesResponse, Error>({
@@ -40,7 +42,7 @@ export default function NotesClient({ tag }: NotesClientProps) {
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
       <SearchBox
         value={search}
-        onSearch={(value) => {
+        onChange={(value) => {
           setSearch(value);
           setPage(1);
         }}

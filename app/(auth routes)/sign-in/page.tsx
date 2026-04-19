@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { login, LoginRequest } from '@/lib/api/clientApi';
 import { useRouter } from 'next/navigation';
 import { AxiosError } from 'axios';
@@ -63,7 +63,7 @@ export default function SignInPage() {
         <div className={css.actions}>
         <button className={css.submitButton} type="submit">Log in</button>
         </div>
-      {error && <p>{error}</p>}
+      {error && <p className={css.error}>{error}</p>}
     </form>
     </main>
   );

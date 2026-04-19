@@ -1,5 +1,5 @@
 import { nextServer } from './api';
-import type { User, UpdateUserRequest } from '@/types/user';
+import type { User } from '@/types/user';
 import type { Note } from '@/types/note'; 
 
 export interface NotesResponse {
@@ -15,8 +15,14 @@ export type LoginRequest = {
 export type RegisterRequest = {
   email: string;
   password: string;
-  username: string;
 };
+
+export interface UpdateUserRequest {
+username: string;
+avatar: string;
+};
+
+
 
 export async function createNote(noteData: Partial<Note>): Promise<Note> {
   const { data } = await nextServer.post('/notes', noteData);
@@ -59,15 +65,13 @@ export const updateMe = async (payload: UpdateUserRequest) => {
   return res.data;
 };
 
-type CheckSessionRequest = {
+type CheckSessionResponse = {
   success: boolean;
 };
 
 export const checkSession = async (): Promise<boolean> => {
-  const res = await nextServer.get<CheckSessionRequest>('/auth/session', {
-    withCredentials: true
-  });
-  return res.data.success;
+  const { data } = await nextServer.get<CheckSessionResponse>('/auth/session');
+  return data.success;
 };
 
 export const login = async (data: LoginRequest): Promise<User> => {
@@ -78,9 +82,9 @@ export const login = async (data: LoginRequest): Promise<User> => {
 };
 
 export const logout = async (): Promise<void> => {
-  await nextServer.post('/auth/logout', {
-    withCredentials: true
-  })
+  await nextServer.post('/auth/logout', {}, {
+    withCredentials: true,
+  });
 };
 
 export const register = async (data: RegisterRequest): Promise<User> => {
