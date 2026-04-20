@@ -19,7 +19,6 @@ export type RegisterRequest = {
 
 export interface UpdateUserRequest {
 username: string;
-avatar: string;
 };
 
 

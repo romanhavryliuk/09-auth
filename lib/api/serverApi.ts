@@ -13,12 +13,12 @@ async function getCookieHeader(): Promise<string> {
     .join('; ');
 }
 
-export async function checkSession(): Promise<boolean> {
+export async function checkSession() {
   const cookieHeader = await getCookieHeader();
-  const { data } = await nextServer.get<{ success: boolean }>('/auth/session', {
+
+  return await nextServer.get('/auth/session', {
     headers: { Cookie: cookieHeader },
   });
-  return data.success;
 }
 
 export async function fetchNotes(params?: {

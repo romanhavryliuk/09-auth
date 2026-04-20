@@ -36,7 +36,7 @@ export default function EditProfilePage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const updatedUser = await updateMe({ username, avatar });
+      const updatedUser = await updateMe({ username });
       setUser(updatedUser);
       router.push('/profile');
     } catch {
